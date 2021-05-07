@@ -19,16 +19,12 @@ g {
 
 article {
     display: flex;
+    max-width: 640px;
 }
 
 footer {
     text-align: right;
 }
-
-article > div {
-    flex-basis: 50%;
-}
-
 
 [type="range"] {
     width: 100%;
