@@ -41,7 +41,7 @@ const valueOfIndex = (fIndex: number) => 2 ** (9 - fIndex)
 // Export
 
 interface BaseProps {
-  extended: readonly [boolean, boolean, boolean, boolean, boolean]
+  pointing: readonly [boolean, boolean, boolean, boolean, boolean]
   fingerLabel?: (index: number) => void;
   onClick: (index: number) => void
 }
@@ -58,13 +58,13 @@ interface Right extends BaseProps {
 
 const Hand: FC<Left | Right> = (props) => {
 
-  const { left, right, extended } = props;
+  const { left, right, pointing } = props;
 
   const isRight = right ?? false;
   const isLeft = left ?? false;
 
   const fIndexes = isLeft ? [0, 1, 2, 3, 4] : [9, 8, 7, 6, 5];
-  const isExtended = (fIndex: number) => extended?.[fIndex % 5];
+  const isExtended = (fIndex: number) => pointing?.[fIndex % 5];
 
   const onClick = (fIndex: number) => (_: React.MouseEvent) => props.onClick(fIndex);
 

@@ -5,45 +5,25 @@ import "./hands.css";
 
 type Fingers = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean];
 
-const pointingDefault: Fingers = [false, false, false, false, false, false, false, false, false, false];
-
-const keyboardValues: Record<string, number> = {
-    "a": 0,
-    "s": 1,
-    "d": 2,
-    "f": 3,
-    "g": 4,
-    "h": 5,
-    "j": 6,
-    "k": 7,
-    "l": 8,
-    ";": 9
-}
+const pointingDefault: Fingers = [true, true, true, true, true, true, true, true, true, true];
 
 const Hands = () => {
-    const [pointing, setPointing] = useState(pointingDefault.map(v => !v));
+    const [pointing, setPointing] = useState<Fingers>(pointingDefault);
 
-    const onClick = (fIndex: number) => setPointing(p => {
-        return produce(p, values => {
-            values[fIndex] = !values[fIndex];
+    const onClick = (fingerIndex: number) => setPointing(previous => {
+        return produce(previous, values => {
+            values[fingerIndex] = !values[fingerIndex];
         })
     });
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         const binaryValue = Number(e.target.value).toString(2);
-        const rightValues = String(binaryValue).split('').map(v => v === "1");
-        const leftValues = Array(10 - rightValues.length).fill(false);
 
-        setPointing([...leftValues, ...rightValues]);
+        const values = String(binaryValue).split('').map(v => v === "1");
+        const padding = Array<boolean>(10 - values.length).fill(false);
+        const fingers = [...padding, ...values] as Fingers;
+        setPointing(fingers);
     }
-
-    useEffect(() => {
-        document.addEventListener('keypress', e => {
-            if (e.key in keyboardValues) {
-                onClick(keyboardValues[e.key])
-            }
-        });
-    }, []);
 
     const leftFingers = [
         pointing[0], // Thumb
@@ -67,22 +47,18 @@ const Hands = () => {
         <>
             <article>
                 <div>
-                    <Hand left extended={leftFingers} onClick={onClick} />
+                    <Hand left pointing={leftFingers} onClick={onClick} />
                 </div>
                 <div>
-                    <Hand right extended={rightFingers} onClick={onClick} />
+                    <Hand right pointing={rightFingers} onClick={onClick} />
                 </div>
+                <footer>
+                    <input type="range" value={value} min="0" max={1023} onChange={setValue} />
+                    <label>
+                        <input type="number" value={value} onChange={setValue} max={1023} />
+                    </label>
+                </footer>
             </article>
-            <footer>
-                <label>
-                    Total
-                    <input type="number" value={value} onChange={setValue} max={1023} />
-                </label>
-                <input type="range" value={value} min="0" max={1023} onChange={setValue} />
-                <div className="keys">
-                    {Object.keys(keyboardValues).map((v, i) => <span key={i}><b>{v}</b> {2 ** (9 - i)}</span>)}
-                </div>
-            </footer>
         </>
     );
 }

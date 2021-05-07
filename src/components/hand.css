@@ -3,8 +3,12 @@ svg {
     stroke-width: 3.5;
 }
 
-g {
+path {
     stroke: black;
+    fill: #ff5454;
+}
+
+circle {
     fill: #ff5454;
 }
 

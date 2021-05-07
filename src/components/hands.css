@@ -1,9 +1,21 @@
 article {
-    display: flex;
+    display: grid;
+    grid-template-areas:
+        "left right"
+        "footer footer";
     max-width: 640px;
 }
 
+div:nth-child(1) {
+    grid-area: left;
+}
+
+div:nth-child(2) {
+    grid-area: right;
+}
+
 footer {
+    grid-area: footer;
     text-align: right;
 }
 
