@@ -1,38 +1,77 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  justify-items: center;
+  height: 100vh;
+  width: 100vw;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-content: center;
 }
 
-.App-link {
-  color: #61dafb;
+svg {
+    width: 100%;
+    stroke-width: 3.5;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+g {
+    stroke: black;
+    fill: #ff5454;
+}
+
+article {
+    display: flex;
+}
+
+footer {
+    text-align: right;
+}
+
+article > div {
+    flex-basis: 50%;
+}
+
+
+[type="range"] {
+    width: 100%;
+}
+
+[type="number"] {
+    margin-left: 10px;
+    width: 75px;
+}
+
+.closed, .extended {
+    cursor: pointer;
+}
+
+.extended :nth-child(2) {
+    opacity: 0;
+}
+.closed :nth-child(1) {
+    opacity: 0;
+}
+
+circle.lowlight {
+    opacity: 0;
+    transition: opacity 100ms, transform 100ms, stroke-width 100ms;
+    transform: translateY(10%);
+}
+
+circle.highlight {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+text {
+    stroke-width: 0;
+    fill: black;
+}
+
+.keys {
+    display: flex;
+}
+
+.keys > * {
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
 }
