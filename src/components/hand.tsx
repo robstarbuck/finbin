@@ -1,4 +1,5 @@
 import React, { FC, Fragment } from "react";
+import "./hand.css";
 
 const fingerPaths: Record<string, [string, string]> = {
   Thumb: [

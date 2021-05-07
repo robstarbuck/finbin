@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Hand } from "./hand";
-import produce from 'immer'
+import produce from "immer";
+import "./hands.css";
 
 type Fingers = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean];
 

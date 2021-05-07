@@ -1,0 +1,17 @@
+article {
+    display: flex;
+    max-width: 640px;
+}
+
+footer {
+    text-align: right;
+}
+
+[type="range"] {
+    width: 100%;
+}
+
+[type="number"] {
+    margin-left: 10px;
+    width: 75px;
+}

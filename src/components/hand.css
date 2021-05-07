@@ -1,0 +1,46 @@
+svg {
+    width: 100%;
+    stroke-width: 3.5;
+}
+
+g {
+    stroke: black;
+    fill: #ff5454;
+}
+
+.closed, .extended {
+    cursor: pointer;
+}
+
+.extended :nth-child(2) {
+    opacity: 0;
+}
+.closed :nth-child(1) {
+    opacity: 0;
+}
+
+circle.lowlight {
+    opacity: 0;
+    transition: opacity 100ms, transform 100ms, stroke-width 100ms;
+    transform: translateY(10%);
+}
+
+circle.highlight {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+text {
+    stroke-width: 0;
+    fill: black;
+}
+
+.keys {
+    display: flex;
+}
+
+.keys > * {
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}
