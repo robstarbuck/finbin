@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Hand } from "./hand";
 import produce from "immer";
 import "./hands.css";
@@ -17,12 +17,12 @@ const Hands = () => {
     });
 
     const setValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const binaryValue = Number(e.target.value).toString(2);
+        const binary = Number(e.target.value).toString(2);
+        const paddedBinary = binary.padStart(10, "0");
 
-        const values = String(binaryValue).split('').map(v => v === "1");
-        const padding = Array<boolean>(10 - values.length).fill(false);
-        const fingers = [...padding, ...values] as Fingers;
-        setPointing(fingers);
+        const values = paddedBinary.split('').map(v => v === "1");
+
+        setPointing(values as Fingers);
     }
 
     const leftFingers = [
