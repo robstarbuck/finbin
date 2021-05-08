@@ -19,7 +19,10 @@ const Hands: FC<Props> = (props) => {
   const onClick = (value: number) => {
     const addValue = (total ^ value) > total;
 
-    setTotal((t) => (addValue ? t + value : t - value));
+    setTotal((t) => {
+      const newValue = addValue ? t + value : t - value;
+      return newValue > maxValue ? t : newValue;
+    });
   };
 
   const fingerPointing = (value: number) => {
@@ -43,14 +46,13 @@ const Hands: FC<Props> = (props) => {
       <article>
         {setDirection(hands).map((handIndex, i) => {
           const values = valuesForHand(handIndex);
-          const isRight = yours ? !(i % 2) : Boolean(i % 2);
+          const isRight = yours ? !(i % 2) : !!(i % 2);
 
           return (
             <Fragment key={handIndex}>
               <Hand
-                isRight={isRight}
                 key={handIndex}
-                index={handIndex}
+                isRight={isRight}
                 values={setDirection(values)}
                 fingerPointing={fingerPointing}
                 onClick={onClick}
@@ -66,6 +68,7 @@ const Hands: FC<Props> = (props) => {
               type="number"
               value={total}
               onChange={onChange}
+              min={0}
               max={maxValue}
             />
           </label>

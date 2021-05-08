@@ -35,7 +35,6 @@ const circleX = [23.891, 71.674, 119.456, 167.238, 215.021];
 // Export
 
 interface Props<V> {
-  index?: number;
   fingerPointing: (value: V) => boolean;
   values: ReadonlyArray<V | undefined>;
   onClick: (value: V) => void;
