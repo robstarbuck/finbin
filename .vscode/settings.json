@@ -1,0 +1,23 @@
+{
+    "editor.tabSize": 2,
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+    ],
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "emmet.excludeLanguages": [
+      "markdown",
+      "typescript",
+      "typescriptreact",
+      "javascript",
+      "javascriptreact",
+    ],
+    "css.lint.emptyRules": "ignore",
+    "githubPullRequests.defaultMergeMethod": "squash",
+  }
