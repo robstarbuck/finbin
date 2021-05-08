@@ -1,17 +1,17 @@
-import React, { FC, useState } from "react";
+import React, { FC, Fragment, useState } from "react";
 import { Hand } from "./hand";
-import produce from "immer";
-import cn from "classnames";
 import "./hands.css";
 import { valuesForHand, valueToHandCount } from "../lib/fingers";
 
 interface Props {
+  yours?: boolean;
   maxValue?: number;
   showInput?: boolean;
+  rightToLeft?: boolean;
 }
 
 const Hands: FC<Props> = (props) => {
-  const { showInput, maxValue = 1023 } = props;
+  const { showInput, rightToLeft, yours, maxValue = 1023 } = props;
 
   const [total, setTotal] = useState(maxValue);
   const handCount = valueToHandCount(maxValue);
@@ -34,26 +34,28 @@ const Hands: FC<Props> = (props) => {
     .fill(null)
     .map((_, i) => i);
 
-  const rightToLeft = false;
-
-  const direction = <V extends unknown>(array: Array<V>) => {
+  const setDirection = <V extends unknown>(array: Array<V>) => {
     return rightToLeft ? [...array].reverse() : array;
   };
 
   return (
     <section>
-      <article className={cn({ rightToLeft })}>
-        {hands.map((i) => {
-          const values = valuesForHand(i);
+      <article>
+        {setDirection(hands).map((handIndex, i) => {
+          const values = valuesForHand(handIndex);
+          const isRight = yours ? !(i % 2) : Boolean(i % 2);
+
           return (
-            <Hand
-              isRight={!(i % 2)}
-              key={i}
-              index={i}
-              values={direction(values)}
-              fingerPointing={fingerPointing}
-              onClick={onClick}
-            />
+            <Fragment key={handIndex}>
+              <Hand
+                isRight={isRight}
+                key={handIndex}
+                index={handIndex}
+                values={setDirection(values)}
+                fingerPointing={fingerPointing}
+                onClick={onClick}
+              />
+            </Fragment>
           );
         })}
       </article>

@@ -30,7 +30,7 @@ const fingers = Object.keys(fingerPaths);
 
 const rightStyle = { transform: `scale(-1, 1) translate(-100%)` };
 
-const circleX = [23.891, 71.674, 119.456, 167.238, 215.021].reverse();
+const circleX = [23.891, 71.674, 119.456, 167.238, 215.021];
 
 // Export
 
@@ -42,17 +42,13 @@ interface Props<V> {
   isRight: boolean;
 }
 
-const leftIndexes = [0, 1, 2, 3, 4];
-const rightIndexes = [4, 3, 2, 1, 0];
-
 const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
   const { values, fingerPointing, isRight, onClick: onClickProp } = props;
 
   const flipHand = isRight;
+  const indexes = isRight ? [4, 3, 2, 1, 0] : [0, 1, 2, 3, 4];
 
-  const fingerIndexes = isRight ? leftIndexes : rightIndexes;
-
-  const isDisabled = (fIndex: number) => values[fIndex] === undefined;
+  const isDisabled = (index: number) => values[index] === undefined;
 
   const isPointing = (value: V) => fingerPointing(value);
 
@@ -71,15 +67,15 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
       <title>Hand</title>
       <g>
         <g>
-          {fingerIndexes.map((fIndex, i) => {
-            const fName = fingers[i];
-            const value = values[i];
+          {indexes.map((_, index) => {
+            const fName = fingers[index];
+            const value = values[index];
             const onCircleClick = value ? onClick(value) : undefined;
             return (
-              <Fragment key={fIndex}>
+              <Fragment key={index}>
                 <circle
                   onMouseDown={onCircleClick}
-                  cx={circleX[i]}
+                  cx={circleX[index]}
                   cy={20}
                   r={17.474}
                   className={
@@ -88,14 +84,14 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
                 />
                 <circle
                   onMouseDown={onCircleClick}
-                  cx={circleX[i]}
+                  cx={circleX[index]}
                   cy={20}
                   r={17.474}
                   opacity={0}
                   cursor="pointer"
                 >
                   <title>
-                    {fName} Finger {fIndex}
+                    {fName} Finger {index}
                   </title>
                 </circle>
               </Fragment>
@@ -113,9 +109,9 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
             fill="none"
             strokeOpacity={0.2}
           />
-          {fingerIndexes.map((fIndex, i) => {
-            const value = values[fIndex];
-            const fingerName = nameFromIndex(i);
+          {indexes.map((vIndex, index) => {
+            const value = values[vIndex];
+            const fingerName = nameFromIndex(index);
             const paths = fingerPaths[fingerName];
             const pointing = value ? isPointing(value) : false;
             const closed = !pointing;
@@ -124,7 +120,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
 
             return (
               <g
-                key={i}
+                key={index}
                 onMouseDown={onFingerClick}
                 className={cn({ pointing, closed })}
               >
@@ -145,13 +141,13 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
 
         {/* Labels */}
         <g>
-          {fingerIndexes.map((fIndex, i) => {
-            const value = values[i] ? String(values[i]) : null;
+          {indexes.map((_, index) => {
+            const value = values[index] ? String(values[index]) : null;
             return (
               <text
-                opacity={isDisabled(fIndex) ? 0.2 : 1}
-                key={i}
-                x={circleX[i]}
+                opacity={isDisabled(index) ? 0.2 : 1}
+                key={index}
+                x={circleX[index]}
                 y={20}
                 fontFamily="sans-serif"
                 fontSize={11}
