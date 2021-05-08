@@ -51,12 +51,11 @@ interface Right extends BaseProps {
 }
 
 const Hand: FC<Left | Right> = (props) => {
-  const { left, right, pointing } = props;
+  const { left, pointing } = props;
 
-  const isRight = right ?? false;
   const isLeft = left ?? false;
 
-  const fIndexes = isLeft ? [0, 1, 2, 3, 4] : [9, 8, 7, 6, 5];
+  const fingerIndexes = isLeft ? [0, 1, 2, 3, 4] : [9, 8, 7, 6, 5];
   const isExtended = (fIndex: number) => pointing?.[fIndex % 5];
 
   const onClick = (fIndex: number) => () => props.onClick(fIndex);
@@ -73,7 +72,7 @@ const Hand: FC<Left | Right> = (props) => {
     >
       <g>
         <g>
-          {fIndexes.map((fIndex, i) => {
+          {fingerIndexes.map((fIndex, i) => {
             const fName = fingers[i];
             return (
               <Fragment key={fIndex}>
@@ -100,7 +99,7 @@ const Hand: FC<Left | Right> = (props) => {
         </g>
 
         {/* Hand */}
-        <g stroke="#000" style={isRight ? flipHand : undefined}>
+        <g stroke="#000" style={isLeft ? undefined : flipHand}>
           {/* Palm */}
           <path d="M133.238 167.627l.123 3.721a4.409 4.409 0 004.406 4.262h.002a4.328 4.328 0 004.282-3.692l.525-3.526a121.092 121.092 0 0129.132 7.183l-.183 5.447a4.168 4.168 0 003.022 4.149s0 0 0 0a4.315 4.315 0 005.242-2.676l1.09-2.999a120.634 120.634 0 0122.046 13.658l-1.385 6.004a4.997 4.997 0 00-.129 1.156c.098 20.642 5.002 32.816 5.002 61.573 0 42.834-34.776 77.61-77.61 77.61-21.417 0-40.82-8.694-54.868-22.742-14.048-14.048-22.742-33.451-22.742-54.868 0-17.656 5.908-33.944 15.854-46.989l.361-14.975a4.74 4.74 0 00-.008-.43l-.955-15.4a119.832 119.832 0 0128.617-12.087l.447 2.55a5.001 5.001 0 006.01 4.017l.105-.023a5 5 0 003.912-4.723l.136-4.269c7.224-1.368 14.678-2.064 22.294-2.064l5.272.133z" />
           {/* Wrinkle */}
@@ -109,7 +108,7 @@ const Hand: FC<Left | Right> = (props) => {
             fill="none"
             strokeOpacity={0.2}
           />
-          {fIndexes.map((fIndex, i) => {
+          {fingerIndexes.map((fIndex, i) => {
             const fName = fingers[i];
             const paths = fingerPaths[fName];
             return (
@@ -135,7 +134,7 @@ const Hand: FC<Left | Right> = (props) => {
 
         {/* Labels */}
         <g>
-          {fIndexes.map((fIndex, i) => {
+          {fingerIndexes.map((fIndex) => {
             return (
               <text
                 key={fIndex}

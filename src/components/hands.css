@@ -6,11 +6,11 @@ article {
     max-width: 640px;
 }
 
-div:nth-child(1) {
+.left {
     grid-area: left;
 }
 
-div:nth-child(2) {
+.right {
     grid-area: right;
 }
 

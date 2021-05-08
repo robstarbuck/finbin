@@ -2,56 +2,37 @@ import React, { FC, useState } from "react";
 import { Hand } from "./hand";
 import produce from "immer";
 import "./hands.css";
-
-type Fingers = [
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean
-];
-
-const pointingDefault: Fingers = [
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-  true,
-];
+import {
+  Fingers,
+  fingersToValue,
+  valueToFingerCount,
+  valueToFingers,
+  valueToHandCount,
+} from "../lib/fingers";
 
 interface Props {
+  maxValue?: number;
   showInput?: boolean;
 }
 
 const Hands: FC<Props> = (props) => {
-  const { showInput } = props;
+  const { showInput, maxValue = 1023 } = props;
 
-  const [pointing, setPointing] = useState<Fingers>(pointingDefault);
+  const [pointing, setPointing] = useState<Fingers>(valueToFingers(maxValue));
+  const maxFingers = valueToFingerCount(maxValue);
 
-  const onClick = (fingerIndex: number) =>
+  const onClick = (fingerIndex: number) => {
+    console.log({ fingerIndex, maxFingers });
     setPointing((previous) => {
       return produce(previous, (values) => {
         values[fingerIndex] = !values[fingerIndex];
       });
     });
+  };
 
   const setValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const binary = Number(e.target.value).toString(2);
-    const paddedBinary = binary.padStart(10, "0");
-
-    const values = paddedBinary.split("").map((v) => v === "1");
-
-    setPointing(values as Fingers);
+    const fingers = valueToFingers(Number(e.target.value));
+    setPointing(fingers);
   };
 
   const leftFingers = [
@@ -70,15 +51,19 @@ const Hands: FC<Props> = (props) => {
     pointing[9], // Thumb
   ] as const;
 
-  const value = parseInt(pointing.map(Number).join(""), 2);
+  const value = fingersToValue(pointing);
+  const handCount = valueToHandCount(maxValue);
+  const showLeftHand = handCount > 1;
 
   return (
     <>
       <article>
-        <div>
-          <Hand left pointing={leftFingers} onClick={onClick} />
-        </div>
-        <div>
+        {showLeftHand && (
+          <div className="left">
+            <Hand left pointing={leftFingers} onClick={onClick} />
+          </div>
+        )}
+        <div className="right">
           <Hand right pointing={rightFingers} onClick={onClick} />
         </div>
         {showInput && (
@@ -88,7 +73,7 @@ const Hands: FC<Props> = (props) => {
                 type="number"
                 value={value}
                 onChange={setValue}
-                max={1023}
+                max={maxValue}
               />
             </label>
           </footer>
