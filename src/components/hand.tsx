@@ -1,7 +1,8 @@
 import React, { FC, Fragment } from "react";
+import { FingerNames, nameFromIndex } from "../lib/fingers";
 import "./hand.css";
 
-const fingerPaths: Record<string, [string, string]> = {
+const fingerPaths: Record<FingerNames, [string, string]> = {
   Thumb: [
     "M73.935 316.755a415.412 415.412 0 00-4.526-4.459 109.184 109.184 0 01-30.405-53.451c-5.355-22.6-11.497-48.632-12.534-53.028a5.012 5.012 0 00-.468-1.229L7.435 170.239a1.505 1.505 0 01-.023-1.386 1.505 1.505 0 011.121-.814h.004a30.123 30.123 0 0128.568 11.716l10.108 13.477 19.139 22.591s62.451 14.252 62.451 60.087",
     "M73.935 316.763a662.15 662.15 0 00-1.2-1.196 109.207 109.207 0 01-31.222-62.27c-.805-5.676-1.614-11.41-2.375-16.801a27.81 27.81 0 0124.621-31.539l12.172-1.283 17.329-2.599a2.765 2.765 0 013.115 2.156v.001a26.448 26.448 0 01-11.127 27.503l-12.504 8.388s56.059-9.04 56.059 36.795",
@@ -26,16 +27,17 @@ const fingerPaths: Record<string, [string, string]> = {
 
 const fingers = Object.keys(fingerPaths);
 
-const flipHand = { transform: `scale(-1, 1) translate(-100%)` };
+const rightStyle = { transform: `scale(-1, 1) translate(-100%)` };
 
-const circleX = [23.891, 71.674, 119.456, 167.238, 215.021];
+const circleX = [23.891, 71.674, 119.456, 167.238, 215.021].reverse();
 
-const valueOfIndex = (fIndex: number) => 2 ** (9 - fIndex);
+const valueOfIndex = (fIndex: number) => 2 ** fIndex;
 
 // Export
 
 interface BaseProps {
-  pointing: readonly [boolean, boolean, boolean, boolean, boolean];
+  index?: number;
+  pointing: ReadonlyArray<boolean | undefined>;
   fingerLabel?: (index: number) => void;
   onClick: (index: number) => void;
 }
@@ -50,15 +52,20 @@ interface Right extends BaseProps {
   right: true;
 }
 
+const leftIndexes = [0, 1, 2, 3, 4];
+const rightIndexes = [4, 3, 2, 1, 0];
+
 const Hand: FC<Left | Right> = (props) => {
-  const { left, pointing } = props;
+  const { left = false, right = false, pointing, index = 0 } = props;
 
-  const isLeft = left ?? false;
+  const isLeft = left === true && right === false;
+  const flipHand = isLeft;
 
-  const fingerIndexes = isLeft ? [0, 1, 2, 3, 4] : [9, 8, 7, 6, 5];
+  const fingerIndexes = isLeft ? leftIndexes : rightIndexes;
+
   const isExtended = (fIndex: number) => pointing?.[fIndex % 5];
 
-  const onClick = (fIndex: number) => () => props.onClick(fIndex);
+  const onClick = (fIndex: number) => () => props.onClick(fIndex + 5 * index);
 
   return (
     <svg
@@ -91,7 +98,9 @@ const Hand: FC<Left | Right> = (props) => {
                   opacity={0}
                   cursor="pointer"
                 >
-                  <title>{fName} Finger</title>
+                  <title>
+                    {fName} Finger {fIndex}
+                  </title>
                 </circle>
               </Fragment>
             );
@@ -99,7 +108,7 @@ const Hand: FC<Left | Right> = (props) => {
         </g>
 
         {/* Hand */}
-        <g stroke="#000" style={isLeft ? undefined : flipHand}>
+        <g stroke="#000" style={flipHand ? rightStyle : undefined}>
           {/* Palm */}
           <path d="M133.238 167.627l.123 3.721a4.409 4.409 0 004.406 4.262h.002a4.328 4.328 0 004.282-3.692l.525-3.526a121.092 121.092 0 0129.132 7.183l-.183 5.447a4.168 4.168 0 003.022 4.149s0 0 0 0a4.315 4.315 0 005.242-2.676l1.09-2.999a120.634 120.634 0 0122.046 13.658l-1.385 6.004a4.997 4.997 0 00-.129 1.156c.098 20.642 5.002 32.816 5.002 61.573 0 42.834-34.776 77.61-77.61 77.61-21.417 0-40.82-8.694-54.868-22.742-14.048-14.048-22.742-33.451-22.742-54.868 0-17.656 5.908-33.944 15.854-46.989l.361-14.975a4.74 4.74 0 00-.008-.43l-.955-15.4a119.832 119.832 0 0128.617-12.087l.447 2.55a5.001 5.001 0 006.01 4.017l.105-.023a5 5 0 003.912-4.723l.136-4.269c7.224-1.368 14.678-2.064 22.294-2.064l5.272.133z" />
           {/* Wrinkle */}
@@ -109,8 +118,8 @@ const Hand: FC<Left | Right> = (props) => {
             strokeOpacity={0.2}
           />
           {fingerIndexes.map((fIndex, i) => {
-            const fName = fingers[i];
-            const paths = fingerPaths[fName];
+            const fingerName = nameFromIndex(i);
+            const paths = fingerPaths[fingerName];
             return (
               <g
                 key={fIndex}
@@ -119,12 +128,12 @@ const Hand: FC<Left | Right> = (props) => {
               >
                 <path d={paths[0]}>
                   <title>
-                    {fName} Finger {valueOfIndex(fIndex)}
+                    {fingerName} Finger {valueOfIndex(fIndex)}
                   </title>
                 </path>
                 <path d={paths[1]}>
                   <title>
-                    {fName} Finger {valueOfIndex(fIndex)}
+                    {fingerName} Finger {valueOfIndex(fIndex)}
                   </title>
                 </path>
               </g>

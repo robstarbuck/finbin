@@ -11,16 +11,26 @@ export type Fingers = [
   boolean
 ];
 
-export const valueToFingers = (value: number): Fingers => {
-  const binary = value.toString(2);
-  const paddedBinary = binary.padStart(10, "0");
+export type FingerNames = "Thumb" | "Index" | "Middle" | "Ring" | "Little";
 
-  const values = paddedBinary.split("").map((v) => v === "1");
-  return values as Fingers;
+const fingerIndexes: Array<FingerNames> = [
+  "Thumb",
+  "Index",
+  "Middle",
+  "Ring",
+  "Little",
+];
+
+export const nameFromIndex = (index: number) => {
+  const indexOnHand = index % 5;
+  return fingerIndexes[indexOnHand];
 };
 
-export const fingersToValue = (fingers: Fingers) => {
-  return parseInt(fingers.map(Number).join(""), 2);
+export const valueToFingers = (value: number) => {
+  const binary = value.toString(2);
+
+  const values = binary.split("").map((v) => v === "1");
+  return values;
 };
 
 export const valueToFingerCount = (value: number) => {
