@@ -1,5 +1,10 @@
 @import url('https://rsms.me/inter/inter.css');
 
+:root {
+    --fill: #ff5454;
+    --stroke: black;
+}
+
 @supports (font-variation-settings: normal) {
     html > * {
         font-family: 'Inter var', sans-serif;

@@ -4,12 +4,12 @@ svg {
 }
 
 path {
-    stroke: black;
-    fill: #ff5454;
+    stroke: var(--stroke);
+    fill: var(--fill);
 }
 
 circle {
-    fill: #ff5454;
+    fill: var(--fill);
 }
 
 .closed, .extended {

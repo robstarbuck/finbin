@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { Hand } from "./hand";
 import produce from "immer";
 import "./hands.css";
@@ -7,7 +7,14 @@ type Fingers = [boolean, boolean, boolean, boolean, boolean, boolean, boolean, b
 
 const pointingDefault: Fingers = [true, true, true, true, true, true, true, true, true, true];
 
-const Hands = () => {
+interface Props {
+    showInput?: boolean
+}
+
+const Hands: FC<Props> = (props) => {
+
+    const {showInput} = props;
+
     const [pointing, setPointing] = useState<Fingers>(pointingDefault);
 
     const onClick = (fingerIndex: number) => setPointing(previous => {
@@ -52,12 +59,11 @@ const Hands = () => {
                 <div>
                     <Hand right pointing={rightFingers} onClick={onClick} />
                 </div>
-                <footer>
-                    <input type="range" value={value} min="0" max={1023} onChange={setValue} />
+                {showInput && <footer>
                     <label>
                         <input type="number" value={value} onChange={setValue} max={1023} />
                     </label>
-                </footer>
+                </footer>}
             </article>
         </>
     );
