@@ -33,11 +33,15 @@ const Hands: FC<Props> = (props) => {
     .fill(null)
     .map((_, i) => i);
 
-  const leftToRight = true;
+  const leftToRight = false;
 
   const direction = <V extends unknown>(array: Array<V>) => {
-    return leftToRight ? array : array.reverse();
+    return [...(leftToRight ? array.reverse() : array)];
   };
+
+  const handsOrdered = direction(hands);
+
+  console.log(handsOrdered.flatMap((h) => direction(valuesForHand(h))));
 
   return (
     <section>
