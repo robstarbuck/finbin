@@ -12,11 +12,11 @@ circle {
     fill: var(--fill);
 }
 
-.closed, .extended {
+.closed, .pointing {
     cursor: pointer;
 }
 
-.extended :nth-child(2) {
+.pointing :nth-child(2) {
     opacity: 0;
 }
 .closed :nth-child(1) {

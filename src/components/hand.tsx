@@ -1,6 +1,7 @@
-import React, { FC, Fragment } from "react";
+import React, { FC, Fragment, ReactElement } from "react";
 import { FingerNames, nameFromIndex } from "../lib/fingers";
 import "./hand.css";
+import cn from "classnames";
 
 const fingerPaths: Record<FingerNames, [string, string]> = {
   Thumb: [
@@ -31,41 +32,31 @@ const rightStyle = { transform: `scale(-1, 1) translate(-100%)` };
 
 const circleX = [23.891, 71.674, 119.456, 167.238, 215.021].reverse();
 
-const valueOfIndex = (fIndex: number) => 2 ** fIndex;
-
 // Export
 
-interface BaseProps {
+interface Props<V> {
   index?: number;
-  pointing: ReadonlyArray<boolean | undefined>;
-  fingerLabel?: (index: number) => void;
-  onClick: (index: number) => void;
-}
-
-interface Left extends BaseProps {
-  left: true;
-  right?: never;
-}
-
-interface Right extends BaseProps {
-  left?: never;
-  right: true;
+  fingerPointing: (value: V) => boolean;
+  values: ReadonlyArray<V | undefined>;
+  onClick: (value: V) => void;
+  isRight: boolean;
 }
 
 const leftIndexes = [0, 1, 2, 3, 4];
 const rightIndexes = [4, 3, 2, 1, 0];
 
-const Hand: FC<Left | Right> = (props) => {
-  const { left = false, right = false, pointing, index = 0 } = props;
+const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
+  const { values, fingerPointing, isRight, onClick: onClickProp } = props;
 
-  const isLeft = left === true && right === false;
-  const flipHand = isLeft;
+  const flipHand = isRight;
 
-  const fingerIndexes = isLeft ? leftIndexes : rightIndexes;
+  const fingerIndexes = isRight ? leftIndexes : rightIndexes;
 
-  const isExtended = (fIndex: number) => pointing?.[fIndex % 5];
+  const isDisabled = (fIndex: number) => values[fIndex] === undefined;
 
-  const onClick = (fIndex: number) => () => props.onClick(fIndex + 5 * index);
+  const isPointing = (value: V) => fingerPointing(value);
+
+  const onClick = (value: V) => () => onClickProp(value);
 
   return (
     <svg
@@ -77,22 +68,27 @@ const Hand: FC<Left | Right> = (props) => {
       strokeLinejoin="round"
       strokeMiterlimit={1.5}
     >
+      <title>Hand</title>
       <g>
         <g>
           {fingerIndexes.map((fIndex, i) => {
             const fName = fingers[i];
+            const value = values[i];
+            const onCircleClick = value ? onClick(value) : undefined;
             return (
               <Fragment key={fIndex}>
                 <circle
-                  onMouseDown={onClick(fIndex)}
-                  cx={circleX[fIndex % 5]}
+                  onMouseDown={onCircleClick}
+                  cx={circleX[i]}
                   cy={20}
                   r={17.474}
-                  className={isExtended(fIndex) ? "highlight" : "lowlight"}
+                  className={
+                    value && isPointing(value) ? "highlight" : "lowlight"
+                  }
                 />
                 <circle
-                  onMouseDown={onClick(fIndex)}
-                  cx={circleX[fIndex % 5]}
+                  onMouseDown={onCircleClick}
+                  cx={circleX[i]}
                   cy={20}
                   r={17.474}
                   opacity={0}
@@ -118,22 +114,28 @@ const Hand: FC<Left | Right> = (props) => {
             strokeOpacity={0.2}
           />
           {fingerIndexes.map((fIndex, i) => {
+            const value = values[fIndex];
             const fingerName = nameFromIndex(i);
             const paths = fingerPaths[fingerName];
+            const pointing = value ? isPointing(value) : false;
+            const closed = !pointing;
+
+            const onFingerClick = value ? onClick(value) : undefined;
+
             return (
               <g
-                key={fIndex}
-                onMouseDown={onClick(fIndex)}
-                className={isExtended(fIndex) ? "extended" : "closed"}
+                key={i}
+                onMouseDown={onFingerClick}
+                className={cn({ pointing, closed })}
               >
                 <path d={paths[0]}>
                   <title>
-                    {fingerName} Finger {valueOfIndex(fIndex)}
+                    {fingerName} Finger {value}
                   </title>
                 </path>
                 <path d={paths[1]}>
                   <title>
-                    {fingerName} Finger {valueOfIndex(fIndex)}
+                    {fingerName} Finger {value}
                   </title>
                 </path>
               </g>
@@ -143,11 +145,13 @@ const Hand: FC<Left | Right> = (props) => {
 
         {/* Labels */}
         <g>
-          {fingerIndexes.map((fIndex) => {
+          {fingerIndexes.map((fIndex, i) => {
+            const value = values[i] ? String(values[i]) : null;
             return (
               <text
-                key={fIndex}
-                x={circleX[fIndex % 5]}
+                opacity={isDisabled(fIndex) ? 0.2 : 1}
+                key={i}
+                x={circleX[i]}
                 y={20}
                 fontFamily="sans-serif"
                 fontSize={11}
@@ -155,7 +159,7 @@ const Hand: FC<Left | Right> = (props) => {
                 dominantBaseline="central"
                 pointerEvents="none"
               >
-                {valueOfIndex(fIndex)}
+                {value}
               </text>
             );
           })}

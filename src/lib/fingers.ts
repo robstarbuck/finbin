@@ -26,7 +26,7 @@ export const nameFromIndex = (index: number) => {
   return fingerIndexes[indexOnHand];
 };
 
-export const valueToFingers = (value: number) => {
+export const valueToFingers = (value: number, index: number) => {
   const binary = value.toString(2);
 
   const values = binary.split("").map((v) => v === "1");
@@ -40,4 +40,8 @@ export const valueToFingerCount = (value: number) => {
 export const valueToHandCount = (value: number) => {
   const fingerCount = valueToFingerCount(value);
   return Math.ceil(fingerCount / 5);
+};
+
+export const valuesForHand = (index: number) => {
+  return [0, 1, 2, 3, 4].map((v) => 2 ** (v + index * 5));
 };

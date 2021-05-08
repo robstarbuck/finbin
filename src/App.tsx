@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="App">
-      <Hands showInput={showInput} maxValue={1023} />
+      <Hands showInput={showInput} maxValue={32} />
     </div>
   );
 }

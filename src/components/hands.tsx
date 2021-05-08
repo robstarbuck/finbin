@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { Hand } from "./hand";
 import produce from "immer";
 import "./hands.css";
-import { valueToFingerCount, valueToHandCount } from "../lib/fingers";
+import { valuesForHand, valueToHandCount } from "../lib/fingers";
 
 interface Props {
   maxValue?: number;
@@ -12,45 +12,63 @@ interface Props {
 const Hands: FC<Props> = (props) => {
   const { showInput, maxValue = 1023 } = props;
 
-  const [value, setValue] = useState(maxValue);
-  const maxFingers = valueToFingerCount(maxValue);
+  const [total, setTotal] = useState(maxValue);
+  const handCount = valueToHandCount(maxValue);
 
-  const onClick = (fingerIndex: number) => {
-    console.log({ fingerIndex, maxFingers });
+  const onClick = (value: number) => {
+    const addValue = (total ^ value) > total;
+
+    setTotal((t) => (addValue ? t + value : t - value));
+  };
+
+  const fingerPointing = (value: number) => {
+    return (total & value) > 0;
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(e.target.value));
+    setTotal(Number(e.target.value));
   };
 
-  const handCount = valueToHandCount(maxValue);
-  const showLeftHand = handCount > 1;
+  const hands = Array(handCount)
+    .fill(null)
+    .map((_, i) => i);
+
+  const leftToRight = true;
+
+  const direction = <V extends unknown>(array: Array<V>) => {
+    return leftToRight ? array : array.reverse();
+  };
 
   return (
-    <>
+    <section>
       <article>
-        {showLeftHand && (
-          <div className="left">
-            <Hand left pointing={[true, true, true]} onClick={onClick} />
-          </div>
-        )}
-        <div className="right">
-          <Hand right pointing={[true, false]} onClick={onClick} />
-        </div>
-        {showInput && (
-          <footer>
-            <label>
-              <input
-                type="number"
-                value={value}
-                onChange={onChange}
-                max={maxValue}
-              />
-            </label>
-          </footer>
-        )}
+        {direction(hands).map((i) => {
+          const values = valuesForHand(i);
+          return (
+            <Hand
+              isRight={true}
+              key={i}
+              index={i}
+              values={direction(values)}
+              fingerPointing={fingerPointing}
+              onClick={onClick}
+            />
+          );
+        })}
       </article>
-    </>
+      {showInput && (
+        <footer>
+          <label>
+            <input
+              type="number"
+              value={total}
+              onChange={onChange}
+              max={maxValue}
+            />
+          </label>
+        </footer>
+      )}
+    </section>
   );
 };
 

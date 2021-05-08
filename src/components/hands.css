@@ -1,17 +1,9 @@
 article {
-    display: grid;
-    grid-template-areas:
-        "left right"
-        "footer footer";
-    max-width: 640px;
+    display: flex;
+    flex-wrap: wrap;
 }
-
-.left {
-    grid-area: left;
-}
-
-.right {
-    grid-area: right;
+article > * {
+    max-width: 320px;
 }
 
 footer {
