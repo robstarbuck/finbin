@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { Hand } from "./hand";
 import produce from "immer";
+import cn from "classnames";
 import "./hands.css";
 import { valuesForHand, valueToHandCount } from "../lib/fingers";
 
@@ -33,25 +34,20 @@ const Hands: FC<Props> = (props) => {
     .fill(null)
     .map((_, i) => i);
 
-  const leftToRight = true;
+  const rightToLeft = false;
 
   const direction = <V extends unknown>(array: Array<V>) => {
-    return leftToRight ? array : [...array].reverse();
+    return rightToLeft ? [...array].reverse() : array;
   };
-
-  const handsOrdered = direction(hands);
-
-  console.log(handsOrdered.flatMap((h) => direction(valuesForHand(h))));
 
   return (
     <section>
-      <article>
-        {handsOrdered.map((i) => {
+      <article className={cn({ rightToLeft })}>
+        {hands.map((i) => {
           const values = valuesForHand(i);
-          console.log({ values, i });
           return (
             <Hand
-              isRight={true}
+              isRight={!(i % 2)}
               key={i}
               index={i}
               values={direction(values)}

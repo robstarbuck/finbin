@@ -1,7 +1,12 @@
 article {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row-reverse;
 }
+article.rightToLeft {
+    flex-direction: row;
+}
+
 article > * {
     max-width: 320px;
 }
