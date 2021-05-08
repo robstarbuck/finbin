@@ -33,10 +33,10 @@ const Hands: FC<Props> = (props) => {
     .fill(null)
     .map((_, i) => i);
 
-  const leftToRight = false;
+  const leftToRight = true;
 
   const direction = <V extends unknown>(array: Array<V>) => {
-    return [...(leftToRight ? array.reverse() : array)];
+    return leftToRight ? array : [...array].reverse();
   };
 
   const handsOrdered = direction(hands);
@@ -46,8 +46,9 @@ const Hands: FC<Props> = (props) => {
   return (
     <section>
       <article>
-        {direction(hands).map((i) => {
+        {handsOrdered.map((i) => {
           const values = valuesForHand(i);
+          console.log({ values, i });
           return (
             <Hand
               isRight={true}
