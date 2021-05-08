@@ -16,7 +16,7 @@ module.exports = {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
   },
-  ignorePatterns: ["**/*.css", "**/*.svg", "**/*.pegjs"],
+  ignorePatterns: ["**/*.css", "**/*.svg"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
