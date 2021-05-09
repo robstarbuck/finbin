@@ -37,11 +37,15 @@ export const valueToFingerCount = (value: number) => {
   return value.toString(2).length;
 };
 
-export const valueToHandCount = (value: number) => {
+export const binaryHandCount = (value: number) => {
   const fingerCount = valueToFingerCount(value);
   return Math.ceil(fingerCount / 5);
 };
 
-export const valuesForHand = (index: number) => {
+export const binaryForHand = (index: number) => {
   return [0, 1, 2, 3, 4].map((v) => 2 ** (v + index * 5));
+};
+
+export const decimalForHand = (index: number) => {
+  return [1, 2, 3, 4, 5].map((v) => v + index * 5);
 };

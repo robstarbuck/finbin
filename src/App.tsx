@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { Hands } from "./components/hands";
+import { HandsFor } from "./components/hands-for";
 
-function App() {
+const App = () => {
   const params = new URLSearchParams(document.location.search);
-
-  const showInput = params.get("showInput") === "1";
-  const rightToLeft = params.get("rightToLeft") === "1";
-  const maxValue = Number(params.get("maxValue") ?? 1023);
 
   const fill = params.get("fill");
   if (fill) {
@@ -16,13 +12,9 @@ function App() {
 
   return (
     <div className="App">
-      <Hands
-        showInput={showInput}
-        maxValue={maxValue}
-        rightToLeft={rightToLeft}
-      />
+      <HandsFor type="binary" />
     </div>
   );
-}
+};
 
 export default App;

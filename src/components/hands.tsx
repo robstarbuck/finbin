@@ -1,43 +1,31 @@
-import React, { FC, Fragment, useState } from "react";
+import React, { ReactElement } from "react";
 import { Hand } from "./hand";
 import "./hands.css";
-import { valuesForHand, valueToHandCount } from "../lib/fingers";
 
-interface Props {
+interface Props<V> {
+  count: number;
   yours?: boolean;
-  maxValue?: number;
-  showInput?: boolean;
   rightToLeft?: boolean;
+  fingerValues: (hand: number) => ReadonlyArray<V>;
+  fingerPointing: (finger: V) => boolean;
+  onClick: (finger: V) => void;
 }
 
-const Hands: FC<Props> = (props) => {
-  const { showInput, rightToLeft, yours, maxValue = 1023 } = props;
+const Hands = <V extends unknown>(props: Props<V>): ReactElement => {
+  const {
+    yours,
+    count,
+    rightToLeft,
+    fingerValues,
+    fingerPointing,
+    onClick,
+  } = props;
 
-  const [total, setTotal] = useState(maxValue);
-  const handCount = valueToHandCount(maxValue);
-
-  const onClick = (value: number) => {
-    const addValue = (total ^ value) > total;
-
-    setTotal((t) => {
-      const newValue = addValue ? t + value : t - value;
-      return newValue > maxValue ? t : newValue;
-    });
-  };
-
-  const fingerPointing = (value: number) => {
-    return (total & value) > 0;
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotal(Number(e.target.value));
-  };
-
-  const hands = Array(handCount)
+  const hands = Array(count)
     .fill(null)
     .map((_, i) => i);
 
-  const setDirection = <V extends unknown>(array: Array<V>) => {
+  const setDirection = <V extends unknown>(array: ReadonlyArray<V>) => {
     return rightToLeft ? [...array].reverse() : array;
   };
 
@@ -45,35 +33,20 @@ const Hands: FC<Props> = (props) => {
     <section>
       <article>
         {setDirection(hands).map((handIndex, i) => {
-          const values = valuesForHand(handIndex);
+          const values = fingerValues(handIndex);
           const isRight = yours ? !(i % 2) : !!(i % 2);
 
           return (
-            <Fragment key={handIndex}>
-              <Hand
-                key={handIndex}
-                isRight={isRight}
-                values={setDirection(values)}
-                fingerPointing={fingerPointing}
-                onClick={onClick}
-              />
-            </Fragment>
+            <Hand
+              key={handIndex}
+              isRight={isRight}
+              values={setDirection(values)}
+              fingerPointing={fingerPointing}
+              onClick={onClick}
+            />
           );
         })}
       </article>
-      {showInput && (
-        <footer>
-          <label>
-            <input
-              type="number"
-              value={total}
-              onChange={onChange}
-              min={0}
-              max={maxValue}
-            />
-          </label>
-        </footer>
-      )}
     </section>
   );
 };
