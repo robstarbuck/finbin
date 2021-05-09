@@ -11,7 +11,7 @@ interface PropsPrivate {
   type: "love-hate" | "binary" | "decimal";
 }
 
-const HandsFor: FC<PropsPrivate> = (props) => {
+const HandsSwitch: FC<PropsPrivate> = (props) => {
   const { type } = props;
   const params = new URLSearchParams(document.location.search);
 
@@ -43,4 +43,4 @@ const HandsFor: FC<PropsPrivate> = (props) => {
   return null;
 };
 
-export { HandsFor };
+export { HandsSwitch };

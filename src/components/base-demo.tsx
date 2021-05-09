@@ -14,11 +14,12 @@ const Values: FC<ValuesProps> = (props) => {
 
   const paddedValue = from.padStart(padding, "0");
   const fromLen = from.length;
+  const valueIsZero = fromLen === 1 && from === "0";
 
   return (
     <div className="row">
       {paddedValue.split("").map((v, i) => {
-        const isPadding = padding - i > fromLen || (fromLen === 1 && v === "0");
+        const isPadding = padding - i > fromLen || valueIsZero;
         return (
           <span key={i} className={cn({ isPadding })}>
             {renderValue(v)}
@@ -41,17 +42,9 @@ const BinaryDemo = () => {
     <section>
       <article>
         <div className="base-demo">
-          <Values
-            from={value.toString(2)}
-            renderValue={(v) => (v === "0" ? "\uE06B" : v)}
-          />
+          <Values from={value.toString(2)} renderValue={toLinedZeros} />
           <Values from={value.toString(10)} />
-          <Values
-            from={value.toString(26)}
-            renderValue={(v) =>
-              (parseInt(v, 26) + 10).toString(36).toUpperCase()
-            }
-          />
+          <Values from={value.toString(26)} renderValue={toAlphabet} />
           <div>
             <input
               value={value}
@@ -75,5 +68,10 @@ const BinaryDemo = () => {
     </section>
   );
 };
+
+const toAlphabet = (v: string) =>
+  (parseInt(v, 26) + 10).toString(36).toUpperCase();
+
+const toLinedZeros = (v: string) => (v === "0" ? "\uE06B" : v);
 
 export { BinaryDemo };
