@@ -11,11 +11,11 @@ const App = () => {
     document.documentElement.style.setProperty("--fill", fill);
   }
 
-  return (
-    <div className="App">
-      <BinaryDemo />
-    </div>
-  );
+  // return (
+  //   <div className="App">
+  //     <BinaryDemo />
+  //   </div>
+  // );
 
   return (
     <div className="App">
