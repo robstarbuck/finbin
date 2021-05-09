@@ -1,0 +1,29 @@
+.base-demo {
+  height: 640px;
+  width: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 200%;
+}
+
+.base-demo input {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row span {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-weight: 800;
+  transition: font-weight 600ms;
+}
+
+.row span.isPadding {
+  font-weight: 100;
+}

@@ -7,8 +7,8 @@ interface Props<V> {
   yours?: boolean;
   rightToLeft?: boolean;
   fingerValues: (hand: number) => ReadonlyArray<V>;
-  fingerPointing: (finger: V) => boolean;
-  onClick: (finger: V) => void;
+  fingerPointing: (finger: V, index: number) => boolean;
+  onClick: (finger: V, index: number) => void;
 }
 
 const Hands = <V extends unknown>(props: Props<V>): ReactElement => {
@@ -39,6 +39,7 @@ const Hands = <V extends unknown>(props: Props<V>): ReactElement => {
           return (
             <Hand
               key={handIndex}
+              index={handIndex}
               isRight={isRight}
               values={setDirection(values)}
               fingerPointing={fingerPointing}

@@ -1,5 +1,7 @@
 import React, { FC } from "react";
+import { HandsBinary } from "./hands-binary";
 import { HandsDecimal } from "./hands-decimal";
+import { HandsLoveHate } from "./hands-love-hate";
 
 export interface Props {
   params: URLSearchParams;
@@ -22,13 +24,19 @@ const HandsFor: FC<PropsPrivate> = (props) => {
     case "binary":
       return (
         <div className="App">
-          <HandsDecimal params={params} />
+          <HandsBinary params={params} />
         </div>
       );
     case "decimal":
       return (
         <div className="App">
           <HandsDecimal params={params} />
+        </div>
+      );
+    case "love-hate":
+      return (
+        <div className="App">
+          <HandsLoveHate params={params} />
         </div>
       );
   }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import { BinaryDemo } from "./components/base-demo";
 import { HandsFor } from "./components/hands-for";
 
 const App = () => {
@@ -12,7 +13,13 @@ const App = () => {
 
   return (
     <div className="App">
-      <HandsFor type="binary" />
+      <BinaryDemo />
+    </div>
+  );
+
+  return (
+    <div className="App">
+      <HandsFor type="love-hate" />
     </div>
   );
 };

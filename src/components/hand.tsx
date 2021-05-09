@@ -35,26 +35,36 @@ const circleX = [23.891, 71.674, 119.456, 167.238, 215.021];
 // Export
 
 interface Props<V> {
-  fingerPointing: (value: V) => boolean;
+  index?: number;
+  fingerPointing: (value: V, index: number) => boolean;
   values: ReadonlyArray<V | undefined>;
-  onClick: (value: V) => void;
+  onClick: (value: V, index: number) => void;
   isRight: boolean;
 }
 
 const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
-  const { values, fingerPointing, isRight, onClick: onClickProp } = props;
+  const {
+    values,
+    isRight,
+    index: handIndex = 0,
+    fingerPointing,
+    onClick: onClickProp,
+  } = props;
 
   const flipHand = isRight;
   const indexes = isRight ? [4, 3, 2, 1, 0] : [0, 1, 2, 3, 4];
 
   const isDisabled = (index: number) => values[index] === undefined;
 
-  const isPointing = (value: V) => fingerPointing(value);
+  const isPointing = (value: V, index: number) => fingerPointing(value, index);
 
-  const onClick = (value: V) => () => onClickProp(value);
+  const onClick = (value: V, index: number) => () => onClickProp(value, index);
+
+  const absIndex = (index: number) => index + handIndex * 5;
 
   return (
     <svg
+      className="hand"
       viewBox="0 0 239 360"
       xmlns="http://www.w3.org/2000/svg"
       fillRule="evenodd"
@@ -66,10 +76,13 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
       <title>Hand</title>
       <g>
         <g>
-          {indexes.map((_, index) => {
+          {indexes.map((vIndex, index) => {
             const fName = fingers[index];
             const value = values[index];
-            const onCircleClick = value ? onClick(value) : undefined;
+            const indexOnHands = absIndex(vIndex);
+            const onCircleClick = value
+              ? onClick(value, indexOnHands)
+              : undefined;
             return (
               <Fragment key={index}>
                 <circle
@@ -78,7 +91,9 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
                   cy={20}
                   r={17.474}
                   className={
-                    value && isPointing(value) ? "highlight" : "lowlight"
+                    value && isPointing(value, indexOnHands)
+                      ? "highlight"
+                      : "lowlight"
                   }
                 />
                 <circle
@@ -111,11 +126,14 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
           {indexes.map((vIndex, index) => {
             const value = values[vIndex];
             const fingerName = nameFromIndex(index);
+            const indexOnHands = absIndex(vIndex);
             const paths = fingerPaths[fingerName];
-            const pointing = value ? isPointing(value) : false;
+            const pointing = value ? isPointing(value, indexOnHands) : false;
             const closed = !pointing;
 
-            const onFingerClick = value ? onClick(value) : undefined;
+            const onFingerClick = value
+              ? onClick(value, indexOnHands)
+              : undefined;
 
             return (
               <g

@@ -2,7 +2,7 @@ article {
     display: flex;
 }
 
-article > * {
+article > .hand {
     max-width: 320px;
 }
 
