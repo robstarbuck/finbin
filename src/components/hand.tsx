@@ -1,4 +1,4 @@
-import React, { FC, Fragment, ReactElement } from "react";
+import React, { Fragment, ReactElement } from "react";
 import { FingerNames, nameFromIndex } from "../lib/fingers";
 import "./hand.css";
 import cn from "classnames";

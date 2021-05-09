@@ -1,6 +1,5 @@
 article {
     display: flex;
-    flex-wrap: wrap;
 }
 
 article > * {
