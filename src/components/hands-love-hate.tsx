@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { Hands } from "./hands";
 import { getParams } from "../lib/params";
-import produce from "immer";
 
 interface Props {
   params: URLSearchParams;
