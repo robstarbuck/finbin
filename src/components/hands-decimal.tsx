@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Hands } from "./hands";
-import { decimalForHand } from "../lib/fingers";
+import { handToFingersDecimal } from "../lib/fingers";
 import { getParams } from "../lib/params";
 
 interface Props {
@@ -42,7 +42,7 @@ const HandsDecimal: FC<Props> = (props) => {
         count={handCount}
         onClick={onClick}
         fingerPointing={fingerPointing}
-        fingerValues={decimalForHand}
+        fingerValues={handToFingersDecimal}
       />
       {showControls && (
         <footer>

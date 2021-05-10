@@ -26,26 +26,19 @@ export const nameFromIndex = (index: number) => {
   return fingerIndexes[indexOnHand];
 };
 
-export const valueToFingers = (value: number) => {
-  const binary = value.toString(2);
-
-  const values = binary.split("").map((v) => v === "1");
-  return values;
-};
-
-export const valueToFingerCount = (value: number) => {
+export const binaryToFingerCount = (value: number) => {
   return value.toString(2).length;
 };
 
 export const binaryHandCount = (value: number) => {
-  const fingerCount = valueToFingerCount(value);
+  const fingerCount = binaryToFingerCount(value);
   return Math.ceil(fingerCount / 5);
 };
 
-export const binaryForHand = (index: number) => {
-  return [0, 1, 2, 3, 4].map((v) => 2 ** (v + index * 5));
+export const handToFingersBinary = (hand: number) => {
+  return [0, 1, 2, 3, 4].map((v) => 2 ** (v + hand * 5));
 };
 
-export const decimalForHand = (index: number) => {
-  return [1, 2, 3, 4, 5].map((v) => v + index * 5);
+export const handToFingersDecimal = (hand: number) => {
+  return [1, 2, 3, 4, 5].map((v) => v + hand * 5);
 };

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Hands } from "./hands";
-import { binaryForHand, binaryHandCount } from "../lib/fingers";
+import { handToFingersBinary, binaryHandCount } from "../lib/fingers";
 import { getParams } from "../lib/params";
 
 interface Props {
@@ -39,7 +39,7 @@ const HandsBinary: FC<Props> = (props) => {
         count={handCount}
         onClick={onClick}
         fingerPointing={fingerPointing}
-        fingerValues={binaryForHand}
+        fingerValues={handToFingersBinary}
       />
       {showControls && (
         <footer>
