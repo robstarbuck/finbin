@@ -18,7 +18,7 @@ const Values: FC<ValuesProps> = (props) => {
 
   return (
     <div className="row">
-      {paddedValue.split("").map((v, i) => {
+      {Array.from(paddedValue).map((v, i) => {
         const isPadding = padding - i > fromLen || valueIsZero;
         return (
           <span key={i} className={cn({ isPadding })}>
