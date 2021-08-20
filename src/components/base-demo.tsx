@@ -10,7 +10,7 @@ interface ValuesProps {
 }
 
 const Values: FC<ValuesProps> = (props) => {
-  const { from, renderValue = (v) => v, padding = 8 } = props;
+  const { from, renderValue = (v) => v.toUpperCase(), padding = 8 } = props;
 
   const paddedValue = from.padStart(padding, "0");
   const fromLen = from.length;
@@ -42,9 +42,9 @@ const BinaryDemo = () => {
     <section>
       <article>
         <div className="base-demo">
-          <Values from={value.toString(2)} renderValue={toLinedZeros} />
+          <Values from={value.toString(2)} />
           <Values from={value.toString(10)} />
-          <Values from={value.toString(26)} renderValue={toAlphabet} />
+          <Values from={value.toString(16)} />
           <div>
             <input
               value={value}
@@ -68,10 +68,5 @@ const BinaryDemo = () => {
     </section>
   );
 };
-
-const toAlphabet = (v: string) =>
-  (parseInt(v, 26) + 10).toString(36).toUpperCase();
-
-const toLinedZeros = (v: string) => (v === "0" ? "\uE06B" : v);
 
 export { BinaryDemo };
