@@ -1,5 +1,4 @@
 import React, { FC, useState } from "react";
-import { Hands } from "./hands";
 import { handToFingersDecimal } from "../lib/fingers";
 import { getParams } from "../lib/params";
 
@@ -37,13 +36,13 @@ const HandsDecimal: FC<Props> = (props) => {
 
   return (
     <>
-      <Hands
+      {/* <Hands
         {...passed}
         count={handCount}
         onClick={onClick}
         fingerPointing={fingerPointing}
         fingerValues={handToFingersDecimal}
-      />
+      /> */}
       {showControls && (
         <footer>
           <label>

@@ -1,7 +1,12 @@
 import React, { FC, useState } from "react";
-import { Hands } from "./hands";
-import { handToFingersBinary, binaryHandCount } from "../lib/fingers";
+import { Hand } from "./hand";
 import { getParams } from "../lib/params";
+import "./hands.css";
+import {
+  FingerNames,
+  indexOfFingerOnLeft,
+  indexOfFingerOnRight,
+} from "../lib/fingers";
 
 interface Props {
   params: URLSearchParams;
@@ -9,38 +14,70 @@ interface Props {
 
 const HandsBinary: FC<Props> = (props) => {
   const { params } = props;
-  const { showControls, ...passed } = getParams(params);
-  const maxValue = Number(params.get("maxValue") ?? 1023);
+  const { showControls, rightToLeft } = getParams(params);
+  const maxValue = Number(params.get("maxValue") ?? 2 ** 9);
+
+  const fingersRequired = maxValue.toString(2).length;
+
+  const values = Array(fingersRequired)
+    .fill(null)
+    .map((_, i) => 2 ** i);
+
+  const handsRequired = Math.ceil(fingersRequired / 5);
+
+  const allHands = Array(handsRequired)
+    .fill(1)
+    .map((_, i) => i)
+    .reverse();
 
   const [total, setTotal] = useState(maxValue);
-  const handCount = binaryHandCount(maxValue);
 
   const onClick = (value: number) => {
-    const addValue = (total ^ value) > total;
-
-    setTotal((t) => {
-      const newValue = addValue ? t + value : t - value;
-      return newValue > maxValue ? t : newValue;
-    });
-  };
-
-  const fingerPointing = (value: number) => {
-    return (total & value) > 0;
+    setTotal(total ^ value);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTotal(Number(e.target.value));
   };
 
+  console.log({ allHands });
+
   return (
     <>
-      <Hands
-        {...passed}
-        count={handCount}
-        onClick={onClick}
-        fingerPointing={fingerPointing}
-        fingerValues={handToFingersBinary}
-      />
+      <section>
+        <article>
+          {allHands.map((handIndex) => {
+            const startingFingerIndex = handIndex * 5;
+            const isRight = handIndex % 2 === 0;
+
+            const getFinger = (finger: FingerNames) => {
+              const indexOfFinger = isRight
+                ? indexOfFingerOnRight
+                : indexOfFingerOnLeft;
+              const localIndex = indexOfFinger(finger);
+              const value = values[localIndex + startingFingerIndex];
+              return {
+                value,
+                extended: Boolean(value & total),
+                onClick: () => onClick(value),
+              };
+            };
+
+            return (
+              <Hand
+                isRight={!isRight}
+                key={handIndex}
+                title={`Hand ${handIndex}`}
+                thumb={getFinger("thumb")}
+                index={getFinger("index")}
+                middle={getFinger("middle")}
+                ring={getFinger("ring")}
+                little={getFinger("little")}
+              />
+            );
+          })}
+        </article>
+      </section>
       {showControls && (
         <footer>
           <label>

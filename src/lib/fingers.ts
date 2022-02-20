@@ -1,29 +1,42 @@
-export type Fingers = [
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean,
-  boolean
+export type FingerNames = "thumb" | "index" | "middle" | "ring" | "little";
+
+export const fingersThumbToLittle: Array<FingerNames> = [
+  "thumb",
+  "index",
+  "middle",
+  "ring",
+  "little",
 ];
 
-export type FingerNames = "Thumb" | "Index" | "Middle" | "Ring" | "Little";
-
-const fingerIndexes: Array<FingerNames> = [
-  "Thumb",
-  "Index",
-  "Middle",
-  "Ring",
-  "Little",
+export const fingersLittleToThumb: Array<FingerNames> = [
+  "little",
+  "ring",
+  "middle",
+  "index",
+  "thumb",
 ];
 
-export const nameFromIndex = (index: number) => {
-  const indexOnHand = index % 5;
-  return fingerIndexes[indexOnHand];
+export const indexOfFingerOnLeft = (name: FingerNames) => {
+  return fingersThumbToLittle.indexOf(name);
+};
+
+export const indexOfFingerOnRight = (name: FingerNames) => {
+  return fingersLittleToThumb.indexOf(name);
+};
+
+export const fingerTitle = (name: FingerNames) => {
+  switch (name) {
+    case "thumb":
+      return "Thumb";
+    case "index":
+      return "Index";
+    case "middle":
+      return "Middle";
+    case "ring":
+      return "Ring";
+    case "little":
+      return "Little";
+  }
 };
 
 export const binaryToFingerCount = (value: number) => {
