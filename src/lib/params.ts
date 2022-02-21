@@ -1,12 +1,19 @@
 export interface Params {
-  yours: boolean;
-  showControls: boolean;
-  rightToLeft: boolean;
+  type?: string;
+  maxBinaryValue?: number;
+  hideControls: boolean;
 }
 
-export const getParams = (params: URLSearchParams): Params => {
-  const yours = params.get("yours") === "1";
-  const showControls = params.get("showControls") === "1";
-  const rightToLeft = params.get("rightToLeft") !== "false";
-  return { yours, showControls, rightToLeft };
+export const getParams = (): Params => {
+  const params = new URLSearchParams(document.location.search);
+  const type = params.get("type") ?? undefined;
+
+  const maxBinaryValueParam = parseInt(params.get("maxBinaryValue") ?? "");
+  const maxBinaryValue = Number.isNaN(maxBinaryValueParam)
+    ? undefined
+    : maxBinaryValueParam;
+
+  const hideControls = params.get("hideControls") ? true : false;
+
+  return { type, maxBinaryValue, hideControls };
 };

@@ -1,19 +1,15 @@
 @import url('https://rsms.me/inter/inter.css');
 
 :root {
-    --fill: #ff5454;
-    --stroke: black;
+    --fill: var(--light);
+    --stroke: var(--dark);
+    --highlight: var(--attention);
+    --circle: var(--highlight);
 }
 
-@supports (font-variation-settings: normal) {
-    html > * {
-        font-family: 'Inter var', sans-serif;
-        color: var(--night);
-    }
-    input {
-        font-family: 'Inter var', sans-serif;
-    }
-}   
+body {
+    background-color: var(--mid);
+}
 
 .App {
   display: grid;
@@ -22,4 +18,18 @@
   width: 100vw;
   align-items: center;
   align-content: center;
+}
+
+[type="range"] {
+    width: 100%;
+}
+
+[type="number"] {
+    width: 75px;
+    position: absolute;
+    bottom: calc(2 * var(--tile));
+    right: calc(2 * var(--tile));
+    background: var(--highlight);
+    border: 2px solid var(--highlight);
+    border-radius: 4px;
 }

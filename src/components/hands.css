@@ -5,17 +5,3 @@ article {
 article > .hand {
     max-width: 320px;
 }
-
-footer {
-    grid-area: footer;
-    text-align: right;
-}
-
-[type="range"] {
-    width: 100%;
-}
-
-[type="number"] {
-    margin-left: 10px;
-    width: 75px;
-}

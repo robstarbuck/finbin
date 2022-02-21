@@ -9,7 +9,7 @@ path {
 }
 
 circle {
-    fill: var(--fill);
+    fill: var(--circle);
 }
 
 .isClosed, .isExtended {

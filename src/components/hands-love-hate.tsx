@@ -8,34 +8,17 @@ import {
   indexOfFingerOnRight,
 } from "../lib/fingers";
 
-interface Props {
-  params: URLSearchParams;
-}
-
-const HandsLoveHate: FC<Props> = (props) => {
-  const { params } = props;
-  const { showControls, rightToLeft } = getParams(params);
-  const maxValue = Number(params.get("maxValue") ?? 2 ** 4);
-
-  const fingersRequired = maxValue.toString(2).length;
-
+const HandsLoveHate: FC = () => {
   const leftFingers = ["❤️️", "L", "O", "V", "E"];
   const rightFingers = ["H", "A", "T", "E", "🖤"];
-  const values = leftFingers;
+  const values = [...leftFingers, ...rightFingers];
 
-  const handsRequired = 1;
+  const allHands = [0, 1];
 
-  const allHands = [0];
-
-  const [total, setCharacter] = useState(values);
+  const [closed, setClosed] = useState<number | undefined>(undefined);
 
   const onClick = (index: number) => {
-    console.log(index);
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value;
-    setCharacter(values);
+    setClosed(index);
   };
 
   return (
@@ -51,12 +34,11 @@ const HandsLoveHate: FC<Props> = (props) => {
                 ? indexOfFingerOnRight
                 : indexOfFingerOnLeft;
               const localIndex = indexOfFinger(finger);
-              const index = localIndex + startingFingerIndex;
               const value = values[localIndex + startingFingerIndex];
               return {
                 value,
-                extended: true,
-                onClick: () => onClick(index),
+                extended: closed !== undefined ? handIndex === closed : true,
+                onClick: () => onClick(handIndex),
               };
             };
 
@@ -75,19 +57,6 @@ const HandsLoveHate: FC<Props> = (props) => {
           })}
         </article>
       </section>
-      {showControls && (
-        <footer>
-          <label>
-            <input
-              type="number"
-              value={total}
-              onChange={onChange}
-              min={0}
-              max={maxValue}
-            />
-          </label>
-        </footer>
-      )}
     </>
   );
 };

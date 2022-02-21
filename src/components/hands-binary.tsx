@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Hand } from "./hand";
-import { getParams } from "../lib/params";
 import "./hands.css";
 import {
   FingerNames,
@@ -9,13 +8,13 @@ import {
 } from "../lib/fingers";
 
 interface Props {
-  params: URLSearchParams;
+  hideControls?: boolean;
+  maxValue?: number;
 }
 
 const HandsBinary: FC<Props> = (props) => {
-  const { params } = props;
-  const { showControls, rightToLeft } = getParams(params);
-  const maxValue = Number(params.get("maxValue") ?? 2 ** 9);
+  const { hideControls, maxValue: _maxValue } = props;
+  const maxValue = _maxValue ?? 2 ** 10 - 1;
 
   const fingersRequired = maxValue.toString(2).length;
 
@@ -40,15 +39,13 @@ const HandsBinary: FC<Props> = (props) => {
     setTotal(Number(e.target.value));
   };
 
-  console.log({ allHands });
-
   return (
     <>
       <section>
         <article>
           {allHands.map((handIndex) => {
             const startingFingerIndex = handIndex * 5;
-            const isRight = handIndex % 2 === 0;
+            const isRight = handIndex % 2 === 1;
 
             const getFinger = (finger: FingerNames) => {
               const indexOfFinger = isRight
@@ -78,7 +75,7 @@ const HandsBinary: FC<Props> = (props) => {
           })}
         </article>
       </section>
-      {showControls && (
+      {!hideControls && (
         <footer>
           <label>
             <input

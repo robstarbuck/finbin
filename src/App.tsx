@@ -1,30 +1,13 @@
 import React from "react";
 import "./App.css";
-import { BinaryDemo } from "./components/base-demo";
 import { HandsBinary } from "./components/hands-binary";
 import { HandsLoveHate } from "./components/hands-love-hate";
+import { getParams } from "./lib/params";
 
 const App = () => {
-  const params = new URLSearchParams(document.location.search);
-
-  const fill = params.get("fill");
-  if (fill) {
-    document.documentElement.style.setProperty("--fill", fill);
-  }
-
-  // return (
-  //   <div className="App">
-  //     <BinaryDemo />
-  //   </div>
-  // );
+  const { type, hideControls, maxBinaryValue } = getParams();
 
   switch (type) {
-    case "binary":
-      return (
-        <div className="App">
-          <HandsBinary params={params} />
-        </div>
-      );
     case "decimal":
       return (
         <div className="App">{/* <HandsDecimal params={params} /> */}</div>
@@ -32,7 +15,14 @@ const App = () => {
     case "love-hate":
       return (
         <div className="App">
-          <HandsLoveHate params={params} />
+          <HandsLoveHate />
+        </div>
+      );
+    default:
+    case "binary":
+      return (
+        <div className="App">
+          <HandsBinary hideControls={hideControls} maxValue={maxBinaryValue} />
         </div>
       );
   }
