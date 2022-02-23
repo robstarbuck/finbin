@@ -12,8 +12,6 @@ const rightStyle = { transform: `scale(-1, 1) translate(-100%)` };
 
 const circleX = [23.891, 71.674, 119.456, 167.238, 215.021];
 
-// Export
-
 type Finger<V> = { value: V; extended: boolean; onClick?: () => void };
 
 interface Props<V> {
@@ -34,8 +32,6 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
 
   const fiveFingers = isRight ? fingersLittleToThumb : fingersThumbToLittle;
 
-  const isFist = fiveFingers.every((f) => !fingers[f]?.extended);
-
   return (
     <svg
       className="hand"
@@ -49,37 +45,35 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
     >
       <title>{title}</title>
       <g>
-        <g>
-          {fiveFingers.map((name, index) => {
-            const value = fingers[name];
-            const onClick = value?.onClick;
-            const isExtended = value?.extended;
+        {fiveFingers.map((name, index) => {
+          const value = fingers[name];
+          const onClick = value?.onClick;
+          const isExtended = value?.extended;
 
-            return (
-              <Fragment key={index}>
-                <circle
-                  onMouseDown={onClick}
-                  cx={circleX[index]}
-                  cy={20}
-                  r={17.474}
-                  className={isExtended ? "highlight" : "lowlight"}
-                />
-                <circle
-                  onMouseDown={onClick}
-                  cx={circleX[index]}
-                  cy={20}
-                  r={17.474}
-                  opacity={0}
-                  cursor="pointer"
-                >
-                  <title>
-                    {fingerTitle(name)} Finger {index}
-                  </title>
-                </circle>
-              </Fragment>
-            );
-          })}
-        </g>
+          return (
+            <Fragment key={index}>
+              <circle
+                onMouseDown={onClick}
+                cx={circleX[index]}
+                cy={20}
+                r={17.474}
+                className={isExtended ? "highlight" : "lowlight"}
+              />
+              <circle
+                onMouseDown={onClick}
+                cx={circleX[index]}
+                cy={20}
+                r={17.474}
+                opacity={0}
+                cursor="pointer"
+              >
+                <title>
+                  {fingerTitle(name)} Finger {index}
+                </title>
+              </circle>
+            </Fragment>
+          );
+        })}
 
         {/* Hand */}
         <g stroke="#000" style={flipHand ? rightStyle : undefined}>
@@ -99,7 +93,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
             const isClosed = !isExtended;
 
             const closedFingerPath = fingerPaths[name][0];
-            const openFingerPath = fingerPaths[name][1];
+            const extendedFingerPath = fingerPaths[name][1];
 
             return (
               <g
@@ -112,7 +106,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
                     {fingerTitle(name)} Finger {value}
                   </title>
                 </path>
-                <path d={openFingerPath}>
+                <path d={extendedFingerPath}>
                   <title>
                     {fingerTitle(name)} Finger {value}
                   </title>

@@ -48,10 +48,9 @@ const HandsBinary: FC<Props> = (props) => {
             const isRight = handIndex % 2 === 1;
 
             const getFinger = (finger: FingerNames) => {
-              const indexOfFinger = isRight
-                ? indexOfFingerOnRight
-                : indexOfFingerOnLeft;
-              const localIndex = indexOfFinger(finger);
+              const localIndex = isRight
+                ? indexOfFingerOnRight(finger)
+                : indexOfFingerOnLeft(finger);
               const value = values[localIndex + startingFingerIndex];
               return {
                 value,

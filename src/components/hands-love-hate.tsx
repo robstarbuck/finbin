@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Hand } from "./hand";
-import { getParams } from "../lib/params";
 import "./hands.css";
 import {
   FingerNames,
@@ -30,10 +29,9 @@ const HandsLoveHate: FC = () => {
             const isRight = handIndex % 2 === 1;
 
             const getFinger = (finger: FingerNames) => {
-              const indexOfFinger = isRight
-                ? indexOfFingerOnRight
-                : indexOfFingerOnLeft;
-              const localIndex = indexOfFinger(finger);
+              const localIndex = isRight
+                ? indexOfFingerOnRight(finger)
+                : indexOfFingerOnLeft(finger);
               const value = values[localIndex + startingFingerIndex];
               return {
                 value,

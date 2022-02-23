@@ -28,8 +28,29 @@ body {
     width: 75px;
     position: absolute;
     bottom: calc(2 * var(--tile));
-    right: calc(2 * var(--tile));
+    left: calc(2 * var(--tile));
     background: var(--highlight);
     border: 2px solid var(--highlight);
     border-radius: 4px;
+}
+
+.windowAction {
+    min-height: calc(1.5 * var(--tile));
+    color: var(--attention);
+    background: transparent;
+    border: 1px solid var(--attention);
+    min-width: calc(1.5 * var(--tile));
+    cursor: pointer;
+}
+
+.windowAction.-close {
+    position: absolute;
+    top: calc(2 * var(--tile));
+    left: calc(2 * var(--tile));
+}
+
+.windowAction.-open {
+    position: absolute;
+    bottom: calc(2 * var(--tile));
+    right: calc(2 * var(--tile));
 }
