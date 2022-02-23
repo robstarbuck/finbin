@@ -41,7 +41,7 @@ const App = () => {
                 ✗
               </button>
             )}
-            {!window.frameElement && (
+            {window.location !== window.parent.location && (
               <button
                 title="Open in New Window"
                 className="windowAction -open"
