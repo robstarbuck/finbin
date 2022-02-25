@@ -30,10 +30,11 @@ body {
 }
 
 [type="number"] {
-    width: 75px;
+    --width: 75px;
+    width: var(--width);
     position: absolute;
-    bottom: calc(2 * var(--tile));
-    left: calc(2 * var(--tile));
+    bottom: calc(1 * var(--tile));
+    right: calc(1 * var(--tile));
     background: var(--highlight);
     border: 2px solid var(--highlight);
     border-radius: 4px;
@@ -46,6 +47,7 @@ body {
     border: 1px solid var(--attention);
     min-width: calc(1.5 * var(--tile));
     cursor: pointer;
+    font-family: 'Inter var', Inter, sans-serif;
 }
 
 .windowAction.-close {
@@ -56,6 +58,7 @@ body {
 
 .windowAction.-open {
     position: absolute;
-    bottom: calc(2 * var(--tile));
-    right: calc(2 * var(--tile));
+    border: 1px solid transparent;
+    top: calc(0 * var(--tile));
+    right: calc(0 * var(--tile));
 }

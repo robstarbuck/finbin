@@ -10,11 +10,20 @@ import {
 interface Props {
   hideControls?: boolean;
   maxValue?: number;
+  initialValue?: number;
+  lockValue?: boolean;
 }
 
 const HandsBinary: FC<Props> = (props) => {
-  const { hideControls, maxValue: _maxValue } = props;
+  const {
+    hideControls,
+    lockValue,
+    initialValue: _initialValue,
+    maxValue: _maxValue,
+  } = props;
   const maxValue = _maxValue ?? 2 ** 10 - 1;
+  const initialValue =
+    _initialValue !== undefined ? Math.min(_initialValue, maxValue) : maxValue;
 
   const fingersRequired = maxValue.toString(2).length;
 
@@ -29,14 +38,21 @@ const HandsBinary: FC<Props> = (props) => {
     .map((_, i) => i)
     .reverse();
 
-  const [total, setTotal] = useState(maxValue);
+  const [total, setTotal] = useState(initialValue);
 
-  const onClick = (value: number) => {
-    setTotal(total ^ value);
+  const onChange = (value: number) => {
+    const newValue = total ^ value;
+
+    if (newValue > maxValue) {
+      return;
+    }
+    // console.log({ newValue, maxValue });
+    setTotal(newValue);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTotal(Number(e.target.value));
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(Number(e.target.value));
+    onChange(Number(e.target.value));
   };
 
   return (
@@ -52,10 +68,11 @@ const HandsBinary: FC<Props> = (props) => {
                 ? indexOfFingerOnRight(finger)
                 : indexOfFingerOnLeft(finger);
               const value = values[localIndex + startingFingerIndex];
+              const onClick = lockValue ? undefined : () => onChange(value);
               return {
                 value,
                 extended: Boolean(value & total),
-                onClick: () => onClick(value),
+                onClick,
               };
             };
 
@@ -78,9 +95,10 @@ const HandsBinary: FC<Props> = (props) => {
         <footer>
           <label>
             <input
+              readOnly={lockValue}
               type="number"
               value={total}
-              onChange={onChange}
+              onChange={lockValue ? undefined : onInputChange}
               min={0}
               max={maxValue}
             />

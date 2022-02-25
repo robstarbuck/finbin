@@ -5,8 +5,7 @@ import { HandsLoveHate } from "./components/hands-love-hate";
 import { ICustomWindow, setCloseTarget } from "./lib/open-window";
 import { getParams } from "./lib/params";
 
-const openWindow = () =>
-  setCloseTarget(window.open("../finbin?hideControls=true"));
+const openWindow = () => setCloseTarget(window.open(String(window.location)));
 
 const closeWindow = window.opener
   ? () => {
@@ -16,7 +15,8 @@ const closeWindow = window.opener
   : null;
 
 const App = () => {
-  const { type, hideControls, maxBinaryValue } = getParams();
+  const { type, hideControls, initialBinaryValue, maxBinaryValue } =
+    getParams();
 
   switch (type) {
     case "love-hate":
@@ -29,7 +29,11 @@ const App = () => {
     case "binary":
       return (
         <div className="App">
-          <HandsBinary hideControls={hideControls} maxValue={maxBinaryValue} />
+          <HandsBinary
+            hideControls={hideControls}
+            maxValue={maxBinaryValue}
+            initialValue={initialBinaryValue}
+          />
           <footer>
             {closeWindow && (
               <button

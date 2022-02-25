@@ -1,5 +1,6 @@
 article {
     display: flex;
+    max-height: calc(100vh - var(--tile) * 2);
 }
 
 article > .hand {
