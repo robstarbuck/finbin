@@ -31,6 +31,8 @@ const HandsBinary: FC<Props> = (props) => {
     .fill(null)
     .map((_, i) => 2 ** i);
 
+  const highestValue = values[values.length - 1];
+
   const handsRequired = Math.ceil(fingersRequired / 5);
 
   const allHands = Array(handsRequired)
@@ -44,10 +46,10 @@ const HandsBinary: FC<Props> = (props) => {
     const newValue = total ^ value;
 
     if (newValue > maxValue) {
-      return;
+      setTotal(maxValue);
+    } else {
+      setTotal(newValue);
     }
-    // console.log({ newValue, maxValue });
-    setTotal(newValue);
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
