@@ -34,7 +34,29 @@ body {
     background: var(--highlight);
     border: 2px solid var(--highlight);
     border-radius: 4px;
+    color: var(--dark);
 }
+
+[type="number"].isMax {
+    animation-duration: 1500ms;
+    animation-name: slidein;
+}
+
+  
+@keyframes slidein {
+    0% {
+        background-color: var(--light);
+        color: var(--light);
+    }
+    50% {
+        color: var(--dark);
+    }
+    
+    100% {
+        background-color: var(--highlight);
+    }
+}
+
 
 [type="number"]:read-only {
     cursor: default;

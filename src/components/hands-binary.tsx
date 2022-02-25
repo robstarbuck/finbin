@@ -100,6 +100,7 @@ const HandsBinary: FC<Props> = (props) => {
         <footer>
           <label>
             <input
+              className={total === maxValue ? "isMax" : undefined}
               readOnly={lockValue}
               type="number"
               value={total}
