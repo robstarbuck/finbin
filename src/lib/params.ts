@@ -2,7 +2,7 @@ export interface Params {
   type?: string;
   maxBinaryValue?: number;
   initialBinaryValue?: number;
-  lockBinaryValue?: boolean;
+  lockValue?: boolean;
   hideControls: boolean;
 }
 
@@ -17,7 +17,7 @@ export const getParams = (): Params => {
     ? undefined
     : initialBinaryValueParam;
 
-  const lockBinaryValue = Boolean(params.get("lockBinaryValue")) ?? false;
+  const lockValue = Boolean(params.get("lockValue")) ?? false;
 
   const maxBinaryValueParam = parseInt(params.get("maxBinaryValue") ?? "");
   const maxBinaryValue = Number.isNaN(maxBinaryValueParam)
@@ -29,7 +29,7 @@ export const getParams = (): Params => {
   return {
     type,
     maxBinaryValue,
-    lockBinaryValue,
+    lockValue,
     initialBinaryValue,
     hideControls,
   };

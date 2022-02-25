@@ -57,7 +57,9 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
                 cx={circleX[index]}
                 cy={20}
                 r={17.474}
-                className={isExtended ? "highlight" : "lowlight"}
+                className={cn(isExtended ? "highlight" : "lowlight", {
+                  onClick,
+                })}
               />
               <circle
                 onMouseDown={onClick}
@@ -65,7 +67,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
                 cy={20}
                 r={17.474}
                 opacity={0}
-                cursor="pointer"
+                cursor={onClick ? "pointer" : "default"}
               >
                 <title>
                   {fingerTitle(name)} Finger {index}
@@ -99,7 +101,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
               <g
                 key={index}
                 onMouseDown={onClick}
-                className={cn({ isExtended, isClosed })}
+                className={cn("finger", { isExtended, isClosed, onClick })}
               >
                 <path d={closedFingerPath}>
                   <title>
@@ -120,11 +122,12 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
         <g>
           {fiveFingers.map((name, index) => {
             const value = fingers[name]?.value;
+            const extended = fingers[name]?.extended;
             const disabled = fingers[name]?.onClick === undefined;
             const label = value ? String(value) : "";
             return (
               <text
-                opacity={disabled ? 0.2 : 1}
+                className={cn({ extended, disabled })}
                 key={index}
                 x={circleX[index]}
                 y={20}

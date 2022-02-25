@@ -38,7 +38,7 @@ const HandsBinary: FC<Props> = (props) => {
     .map((_, i) => i)
     .reverse();
 
-  const [total, setTotal] = useState(initialValue);
+  const [total, setTotal] = useState(() => initialValue);
 
   const onChange = (value: number) => {
     const newValue = total ^ value;
@@ -51,8 +51,11 @@ const HandsBinary: FC<Props> = (props) => {
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(Number(e.target.value));
-    onChange(Number(e.target.value));
+    const newTotal = Number(e.target.value);
+    if (newTotal > maxValue) {
+      return;
+    }
+    setTotal(newTotal);
   };
 
   return (

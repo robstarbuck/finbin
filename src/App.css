@@ -25,10 +25,6 @@ body {
   padding: calc(var(--tile) * 2);
 }
 
-[type="range"] {
-    width: 100%;
-}
-
 [type="number"] {
     --width: 75px;
     width: var(--width);
@@ -38,6 +34,10 @@ body {
     background: var(--highlight);
     border: 2px solid var(--highlight);
     border-radius: 4px;
+}
+
+[type="number"]:read-only {
+    cursor: default;
 }
 
 .windowAction {

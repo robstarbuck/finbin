@@ -15,7 +15,7 @@ const closeWindow = window.opener
   : null;
 
 const App = () => {
-  const { type, hideControls, initialBinaryValue, maxBinaryValue } =
+  const { type, lockValue, hideControls, initialBinaryValue, maxBinaryValue } =
     getParams();
 
   switch (type) {
@@ -30,6 +30,7 @@ const App = () => {
       return (
         <div className="App">
           <HandsBinary
+            lockValue={lockValue}
             hideControls={hideControls}
             maxValue={maxBinaryValue}
             initialValue={initialBinaryValue}
