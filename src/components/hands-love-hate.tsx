@@ -42,8 +42,8 @@ const HandsLoveHate: FC = () => {
 
             return (
               <Hand
-                isRight={isRight}
                 key={handIndex}
+                isRight={isRight}
                 title={`Hand ${handIndex}`}
                 thumb={getFinger("thumb")}
                 index={getFinger("index")}
