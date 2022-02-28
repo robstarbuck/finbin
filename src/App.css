@@ -39,11 +39,11 @@ body {
 
 [type="number"].isMax {
     animation-duration: 1500ms;
-    animation-name: slidein;
+    animation-name: flash;
 }
 
   
-@keyframes slidein {
+@keyframes flash {
     0% {
         background-color: var(--light);
         color: var(--light);

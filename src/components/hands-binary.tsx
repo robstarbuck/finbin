@@ -21,7 +21,7 @@ const HandsBinary: FC<Props> = (props) => {
     initialValue: _initialValue,
     maxValue: _maxValue,
   } = props;
-  const maxValue = _maxValue ?? 2 ** 10 - 1;
+  const maxValue = Math.min(_maxValue ?? 2 ** 10 - 1, Number.MAX_SAFE_INTEGER);
   const initialValue =
     _initialValue !== undefined ? Math.min(_initialValue, maxValue) : maxValue;
 
@@ -30,8 +30,6 @@ const HandsBinary: FC<Props> = (props) => {
   const values = Array(fingersRequired)
     .fill(null)
     .map((_, i) => 2 ** i);
-
-  const highestValue = values[values.length - 1];
 
   const handsRequired = Math.ceil(fingersRequired / 5);
 
@@ -73,10 +71,13 @@ const HandsBinary: FC<Props> = (props) => {
                 ? indexOfFingerOnRight(finger)
                 : indexOfFingerOnLeft(finger);
               const value = values[localIndex + startingFingerIndex];
-              const onClick = lockValue ? undefined : () => onChange(value);
+              const newValue = total ^ value;
+              const newValueExceedsMax = newValue > maxValue;
+              const preventClick = newValueExceedsMax || lockValue;
+              const onClick = preventClick ? undefined : () => onChange(value);
               return {
                 value,
-                extended: Boolean(value & total),
+                extended: value === (value & total),
                 onClick,
               };
             };

@@ -2,15 +2,14 @@ import React from "react";
 import "./App.css";
 import { HandsBinary } from "./components/hands-binary";
 import { HandsLoveHate } from "./components/hands-love-hate";
-import { ICustomWindow, setCloseTarget } from "./lib/open-window";
+import { hasCloseWindow, setCloseTarget } from "./lib/open-window";
 import { getParams } from "./lib/params";
 
 const openWindow = () => setCloseTarget(window.open(String(window.location)));
 
-const closeWindow = window.opener
+const closeWindow = hasCloseWindow(window.opener)
   ? () => {
-      const opener: ICustomWindow = window.opener;
-      opener.closeWindow?.();
+      window.opener.closeWindow();
     }
   : null;
 
