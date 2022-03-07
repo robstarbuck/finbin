@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "finbin",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://robstarbuck.github.io/finbin/",
@@ -54,5 +54,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robstarbuck/finbin/"
   }
 }
