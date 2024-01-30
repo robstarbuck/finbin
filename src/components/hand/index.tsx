@@ -89,7 +89,7 @@ const Hand = <V extends unknown>(props: Props<V>): ReactElement => {
           />
           {fingersLittleToThumb.map((name, index) => {
             const finger = fingers[name];
-            const value = finger?.value ?? "";
+            const value = finger?.value ? String(finger?.value) : "";
             const onClick = finger?.onClick;
             const isExtended = finger?.extended ?? false;
             const isClosed = !isExtended;
